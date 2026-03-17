@@ -2,8 +2,8 @@
     Date 2 Mar 2026
 
     ESL Pro League S23 Stage 1, Stage 2,
-        Legacy vs AURORA,
-    Game of Thrones (3 run) S1 at S3,
+        Legacy vs AURORA, Legacy vs NAVI, FURIA vs PAIN
+    Game of Thrones (3 run) S1 at S4,
 */
 
 using CSTV_v1.Data;
@@ -17,6 +17,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+/*
+builder.Services.AddControllers()
+.AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler =
+        System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles;
+});
+*/
 
 // implementações
 builder.Services.AddScoped<IPlayerInterface, PlayerService>();

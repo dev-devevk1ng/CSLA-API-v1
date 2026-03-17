@@ -1,5 +1,5 @@
 /*
-    6 Mar 2026
+    4 Mar 2026
 */
 
 using System;
@@ -12,13 +12,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CSTV_v1.DTO.Player
 {
-    public class EditPlayerDTO
+    public class PlayerCreateDTO
     {
-        [Key]
-        public Guid Id { get; set; }
         [Required]
-        
         [MaxLength(40)]
-        public required string Nickname { get; set; }
+        public required string Nickname { get; set; }     
     }
 }

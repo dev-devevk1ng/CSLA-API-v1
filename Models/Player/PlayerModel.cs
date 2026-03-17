@@ -18,6 +18,6 @@ namespace CSTV_v1.Models.Player
         public required string Nickname { get; set; }
 
         [Required]
-        public DateTime CreatedAt { get; set; } = DateTime.Now;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
 }

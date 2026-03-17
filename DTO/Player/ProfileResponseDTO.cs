@@ -1,52 +1,25 @@
-﻿/*
-    Date 4 Mar 2026
-*/
-
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
 
-namespace CSTV_v1.Models.Player
+namespace CSTV_v1.DTO.Player
 {
-    [Table("Profile", Schema = "Player")]
-    public class ProfileModel
+    public class ProfileResponseDTO
     {
-        [Key]
         public int Id { get; set; }
-
-        [Required]
         public Guid PlayerId { get; set; }
-
-        [Required]
-        [StringLength(30)]
         public required string FirstName { get; set; }
-
-        [Required]
-        [StringLength(30)]
         public required string LastName { get; set; }
-
-        [Required]
         public DateTime Born { get; set; }
-
-        [Required]
-        [StringLength(15)]
         public required string Status { get; set; }
-
-        [Required]
-        [Column(TypeName = "decimal(10,2)")]
         public decimal ApproxTotalWinnings { get; set; }
-
-        [Required]
         public int YearCareerStart { get; set; }
-
         public int? YearCareerEnd { get; set; }
-
-        [Required]
         public DateTime CreatedAt { get; set; }
-
-        // Navigation property
-        [ForeignKey("PlayerId")]
-        public virtual PlayerModel? Player { get; set; }
+        public required string PlayerNickname { get; set; }
     }
 }
