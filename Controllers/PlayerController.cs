@@ -119,6 +119,47 @@ namespace CSLA.Controllers.Player
             var Profile = await _playerInterface.RemoveProfile(ProfileId);
             return Ok(Profile);
         }
+
+        // Player.NativeName
+        [Tags("NativeName")]
+        [HttpGet("GetAllNativeName")] 
+        public async Task<ActionResult<ResponseModel<List<NativeNameResponseDTO>>>> GetAllNativeNames()
+        {
+            var response = await _playerInterface.GetAllNativeNames();
+            return Ok(response);
+        }
+
+        [Tags("NativeName")]
+        [HttpGet("GetNativeNameByPlayerId")] 
+        public async Task<ActionResult<ResponseModel<NativeNameResponseDTO>>> GetNativeNameByPlayerId(Guid PlayerId)
+        {
+            var response = await _playerInterface.GetNativeNameByPlayerId(PlayerId);
+            return Ok(response);
+        }
+
+        [Tags("NativeName")]
+        [HttpPost("CreateNativeName")] 
+        public async Task<ActionResult<ResponseModel<NativeNameResponseDTO>>> CreateNativeName(NativeNameCreateDTO CreateDTO)
+        {
+            var response = await _playerInterface.CreateNativeName(CreateDTO);
+            return Ok(response);
+        }
+
+        [Tags("NativeName")]
+        [HttpPut("EditNativeName")] 
+        public async Task<ActionResult<ResponseModel<NativeNameResponseDTO>>> EditNativeName(NativeNameEditDTO EditDTO)
+        {
+            var response = await _playerInterface.EditNativeName(EditDTO);
+            return Ok(response);
+        }
+
+        [Tags("NativeName")]
+        [HttpDelete("DeleteNativeName")] 
+        public async Task<ActionResult<ResponseModel<NativeNameResponseDTO>>> DeleteNativeName(Guid PlayerId)
+        {
+            var response = await _playerInterface.DeleteNativeName(PlayerId);
+            return Ok(response);
+        }
         
     }
 }

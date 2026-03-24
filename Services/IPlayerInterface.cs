@@ -31,5 +31,14 @@ namespace CSLA.Services.Player
         Task<ResponseModel<ProfileResponseDTO>> CreateProfile(ProfileCreateDTO CreateDTO);
         Task<ResponseModel<ProfileResponseDTO>> EditProfile(ProfileEditDTO EditDTO);
         Task<ResponseModel<ProfileResponseDTO>> RemoveProfile(int ProfileId);
+
+        // Player.NativeName
+        Task<ResponseModel<List<NativeNameResponseDTO>>> GetAllNativeNames();
+        Task<ResponseModel<NativeNameResponseDTO>> GetNativeNameByPlayerId(Guid PlayerId);
+        Task<ResponseModel<NativeNameResponseDTO>> CreateNativeName(NativeNameCreateDTO CreateDTO);
+        Task<ResponseModel<NativeNameResponseDTO>> EditNativeName(NativeNameEditDTO EditDTO);
+        Task<ResponseModel<NativeNameResponseDTO>> DeleteNativeName(Guid PlayerId);
+
+        // Player.AlternateId
     }
 }

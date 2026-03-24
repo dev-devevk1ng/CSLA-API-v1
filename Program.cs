@@ -1,11 +1,17 @@
 /*
     Date 2 Mar 2026
-
-    ESL Pro League S23 Stage 1, Stage 2,
-        Legacy vs AURORA, Legacy vs NAVI, FURIA vs PAIN, FURIA vs Astralis (sonho estranho)
+    CS
+        ESL Pro League S23 Stage 1, Stage 2,
+            Legacy vs NiP, Gaimin Gladiators vs G2, PaiN vs PARIVISION, Gaimin Gladiators vs Liquid, Legacy vs G2
+            Legacy vs AURORA, Legacy vs NAVI, FURIA vs PAIN, FURIA vs Astralis (sonho estranho)
+        BLAST Open Rotterdam 2026
+            
+    Gaules
+        Amoung Us Ep.1 at Ep.11
+        Sons Of The Forest Ep.1 at Ep.2
     Game of Thrones (3 run) S1 at S7,
     fernandemiguels
-        The Boys S1 at S3, 
+        The Boys S1 at S4, 
 */
 
 using CSLA.Data;

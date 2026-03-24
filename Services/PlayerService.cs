@@ -17,7 +17,6 @@ using CSLA.Models;
 using CSLA.Models.Player;
 using CSLA.DTO.Player;
 
-
 namespace CSLA.Services.Player
 {
     public class PlayerService : IPlayerInterface
@@ -532,6 +531,194 @@ namespace CSLA.Services.Player
             catch (Exception ex)
             {
                 response.Message = ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+    
+        // Player.NativeName
+        public async Task<ResponseModel<List<NativeNameResponseDTO>>> GetAllNativeNames()
+        {
+            ResponseModel<List<NativeNameResponseDTO>> response = new ResponseModel<List<NativeNameResponseDTO>>();
+            try
+            {
+                var NativeNameList = await _context.PlayerNativeName
+                .AsNoTracking()
+                .Select( x => new NativeNameResponseDTO
+                {
+                    PlayerId = x.PlayerId,
+                    NativeFirstName = x.NativeFirstName,
+                    NativeLastName = x.NativeLastName
+                })
+                .ToListAsync();
+
+                if ( NativeNameList.Count == 0 || NativeNameList == null )
+                {
+                    response.Dados = null;
+                    response.Message = "Player.NativeName nao encontrado(s)";
+                    return response;
+                }
+
+                response.Dados = NativeNameList;
+                response.Message = "Player.NativeName encontrado(s)";
+                return response;
+
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = ex.InnerException?.Message ?? ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        public async Task<ResponseModel<NativeNameResponseDTO>> GetNativeNameByPlayerId(Guid PlayerId)
+        {
+            ResponseModel<NativeNameResponseDTO> response = new ResponseModel<NativeNameResponseDTO>();
+            try
+            {
+                var NativeName = await _context.PlayerNativeName
+                .AsNoTracking()
+                .Where( x => x.PlayerId == PlayerId)
+                .Select( x => new NativeNameResponseDTO
+                {
+                    PlayerId = x.PlayerId,
+                    NativeFirstName = x.NativeFirstName,
+                    NativeLastName = x.NativeLastName
+                })
+                .FirstOrDefaultAsync();
+
+                if ( NativeName == null )
+                {
+                    response.Dados = null;
+                    response.Message = "Player.NativeName nao encontrado";
+                    return response;
+                }
+
+                response.Dados = NativeName;
+                response.Message = "Player.NativeName encontrado";
+                return response;
+
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = ex.InnerException?.Message ?? ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        public async Task<ResponseModel<NativeNameResponseDTO>> CreateNativeName(NativeNameCreateDTO CreateDTO)
+        {
+            ResponseModel<NativeNameResponseDTO> response = new ResponseModel<NativeNameResponseDTO>();
+            try
+            {
+                var NativeName = new NativeNameModel
+                {
+                    PlayerId = CreateDTO.PlayerId,
+                    NativeFirstName = CreateDTO.NativeFirstName,
+                    NativeLastName = CreateDTO.NativeLastName,
+                };
+
+                _context.PlayerNativeName.Add(NativeName);
+                await _context.SaveChangesAsync();
+
+                var NativeNameResponse = await _context.PlayerNativeName
+                .AsNoTracking()
+                .Where( x => x.PlayerId == CreateDTO.PlayerId )
+                .Select( x => new NativeNameResponseDTO 
+                {
+                    PlayerId = x.PlayerId,
+                    NativeFirstName = x.NativeFirstName,
+                    NativeLastName = x.NativeLastName
+                })
+                .FirstOrDefaultAsync();
+
+                if ( NativeNameResponse == null )
+                {
+                    response.Dados = null;
+                    response.Message = "Player.NativeName nao encontrado";
+                    return response;
+                }
+
+                response.Dados = NativeNameResponse;
+                response.Message = "Player.NativeName criado com sucesso!";
+                return response;
+
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = ex.InnerException?.Message ?? ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        public async Task<ResponseModel<NativeNameResponseDTO>> EditNativeName(NativeNameEditDTO EditDTO)
+        {
+            ResponseModel<NativeNameResponseDTO> response = new ResponseModel<NativeNameResponseDTO>();
+            try
+            {
+                
+                var NativeName = await _context.PlayerNativeName
+                .Where( x => x.PlayerId == EditDTO.PlayerId )
+                .FirstOrDefaultAsync();
+
+                if ( NativeName == null )
+                {
+                    response.Dados = null;
+                    response.Message = "Player.NativeName nao encontrado";
+                    return response;
+                }
+                
+                NativeName!.NativeFirstName = EditDTO.NativeFirstName;
+                NativeName.NativeLastName = EditDTO.NativeLastName;
+
+                await _context.SaveChangesAsync();
+
+                var NativeNameResponse = new NativeNameResponseDTO
+                {
+                    PlayerId = NativeName.PlayerId,
+                    NativeFirstName = NativeName.NativeFirstName,
+                    NativeLastName = NativeName.NativeLastName,
+                };
+      
+                response.Dados = NativeNameResponse;
+                response.Message = "Player.NativeName editado com sucesso!";
+                return response;
+
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = ex.InnerException?.Message ?? ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        public async Task<ResponseModel<NativeNameResponseDTO>> DeleteNativeName(Guid PlayerId)
+        {
+            ResponseModel<NativeNameResponseDTO> response = new ResponseModel<NativeNameResponseDTO>();
+            try
+            {
+                var NativeName = await _context.PlayerNativeName
+                .Where( x => x.PlayerId == PlayerId)
+                .FirstOrDefaultAsync();
+
+                var NativeNameResponse = new NativeNameResponseDTO
+                {
+                    PlayerId = NativeName!.PlayerId,
+                    NativeFirstName = NativeName.NativeFirstName,
+                    NativeLastName = NativeName.NativeLastName,
+                };
+
+                _context.PlayerNativeName.Remove(NativeName);
+
+                await _context.SaveChangesAsync();
+
+                response.Dados = NativeNameResponse;
+                response.Message = "Player.NativeName deletado com sucesso";
+                return response;
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = ex.InnerException?.Message ?? ex.Message;
                 response.Status = false;
                 return response;
             }

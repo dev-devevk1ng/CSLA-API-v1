@@ -30,6 +30,7 @@ namespace CSLA.Data
         */
         public virtual DbSet<PlayerModel> PlayerPlayer { get; set; }
         public virtual DbSet<ProfileModel> PlayerProfile { get; set; }
+        public virtual DbSet<NativeNameModel> PlayerNativeName { get; set; }
         
     }
 }
