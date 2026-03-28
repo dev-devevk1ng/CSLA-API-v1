@@ -16,6 +16,6 @@ namespace CSLA.DTO.Player
         public int Id { get; set; }
         public Guid PlayerId { get; set; }
         public required string AlternateID { get; set; }
-        public string? PlayerNickname { get; set; }
+        //public string? PlayerNickname { get; set; }
     }
 }

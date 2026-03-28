@@ -26,6 +26,7 @@ namespace CSLA.Models.Player
         public NativeNameModel? NativeName { get; set; }
         // 🔹 Relacionamento 1:N
         public ICollection<AlternateIDModel> AlternateIDs { get; set; } = new List<AlternateIDModel>();
-
+        // 🔹 Relacionamento 1:N
+        public ICollection<RolesModel> Roles { get; set; } = null!;
     }
 }

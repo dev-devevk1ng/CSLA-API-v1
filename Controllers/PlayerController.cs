@@ -36,14 +36,14 @@ namespace CSLA.Controllers.Player
             return Ok(players);
         }
 
-        [HttpGet("PlayerId")]
+        [HttpGet("GetPlayerById")]
         public async Task<ActionResult<ResponseModel<PlayerResponseDTO>>> GetPlayerById(Guid Id)
         {
             var player = await _playerInterface.GetPlayerById(Id);
             return Ok(player);
         }
 
-        [HttpGet("Nickname")]
+        [HttpGet("GetPlayersByNickname")]
         public async Task<ActionResult<ResponseModel<List<PlayerResponseDTO>>>> GetPlayersByNickname(string Nickname)
         {
             var Players = await _playerInterface.GetPlayersByNickname(Nickname);
@@ -89,7 +89,7 @@ namespace CSLA.Controllers.Player
         }
 
         [Tags("Profile")]
-        [HttpGet("GetProfileByName")]
+        [HttpGet("GetProfileByNames")]
         public async Task<ActionResult<ResponseModel<List<ProfileResponseDTO>>>> GetProfilesByNames(string FirstName=null, string LastName=null)
         {
             var Profiles = await _playerInterface.GetProfilesByNames(FirstName, LastName);
@@ -193,5 +193,42 @@ namespace CSLA.Controllers.Player
             var response = await _playerInterface.RemoveAlternateID(Id);
             return Ok(response);
         }
+
+        // Player.Roles
+        [Tags("Roles")]
+        [HttpGet("GetRolesByPlayer")] 
+        public async Task<ActionResult<ResponseModel<List<string>>>> GetRolesByPlayer(Guid playerId)
+        {
+            var response = await _playerInterface.GetRolesByPlayer(playerId);
+            return Ok(response);
+        }
+
+        [Tags("Roles")]
+        [HttpGet("GetPlayersFullDetailsByRole")] 
+        public async Task<ActionResult<ResponseModel<List<PlayerFullDetailsDTO>>>> GetPlayersByRole(int RoleId)
+        {
+            var response = await _playerInterface.GetPlayersByRole(RoleId);
+            return Ok(response);
+        }
+
+        [Tags("Roles")]
+        [HttpPost("AddRoleToPlayer")] 
+        public async Task<ActionResult<ResponseModel<bool>>> AddRoleToPlayer(Guid playerId, int roleId)
+        {
+            var response = await _playerInterface.AddRoleToPlayer(playerId, roleId);
+            return Ok(response);
+        }
+
+        [Tags("Roles")]
+        [HttpDelete("RemoveRoleToPlayer")] 
+        public async Task<ActionResult<ResponseModel<bool>>> RemoveRoleToPlayer(Guid playerId, int roleId)
+        {
+            var response = await _playerInterface.RemoveRoleToPlayer(playerId, roleId);
+            return Ok(response);
+        }
+
+        // Player.Country
+        
+
     }
 }

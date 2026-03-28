@@ -258,7 +258,7 @@ namespace CSLA.Services.Player
                     YearCareerStart = p.YearCareerStart,
                     YearCareerEnd = p.YearCareerEnd,
                     CreatedAt = p.CreatedAt,
-                    PlayerNickname = p.Player!.Nickname
+                    //PlayerNickname = p.Player!.Nickname
                 })
                 .ToListAsync();
 
@@ -300,7 +300,7 @@ namespace CSLA.Services.Player
                     YearCareerStart = p.YearCareerStart,
                     YearCareerEnd = p.YearCareerEnd,
                     CreatedAt = p.CreatedAt,
-                    PlayerNickname = p.Player!.Nickname
+                    //PlayerNickname = p.Player!.Nickname
                 })
                 .FirstOrDefaultAsync( profile => profile.Id == ProfileId );      
                 
@@ -354,7 +354,7 @@ namespace CSLA.Services.Player
                     YearCareerStart = p.YearCareerStart,
                     YearCareerEnd = p.YearCareerEnd,
                     CreatedAt = p.CreatedAt,
-                    PlayerNickname = p.Player!.Nickname
+                    //PlayerNickname = p.Player!.Nickname
                 })
                 .ToListAsync();
 
@@ -412,7 +412,7 @@ namespace CSLA.Services.Player
                     YearCareerStart = Profile.YearCareerStart,
                     YearCareerEnd = Profile.YearCareerEnd,
                     CreatedAt = Profile.CreatedAt,
-                    PlayerNickname = Player!.Nickname
+                    //PlayerNickname = Player!.Nickname
                 };
         
                 response.Message = "Player.Profile criado com sucesso!";
@@ -473,7 +473,7 @@ namespace CSLA.Services.Player
                     ApproxTotalWinnings = Profile.ApproxTotalWinnings,
                     YearCareerStart = Profile.YearCareerStart,
                     YearCareerEnd = Profile.YearCareerEnd,
-                    PlayerNickname = Profile.Player?.Nickname ?? "",
+                    //PlayerNickname = Profile.Player?.Nickname ?? "",
                 };
         
                 response.Message = "Player.Profile editado!";
@@ -515,7 +515,7 @@ namespace CSLA.Services.Player
                     ApproxTotalWinnings = Profile.ApproxTotalWinnings,
                     YearCareerStart = Profile.YearCareerStart,
                     YearCareerEnd = Profile.YearCareerEnd,
-                    PlayerNickname = Profile.Player?.Nickname ?? "",
+                    //PlayerNickname = Profile.Player?.Nickname ?? "",
                 };
 
                 _context.Remove(Profile);
@@ -725,7 +725,7 @@ namespace CSLA.Services.Player
                     Id = alternateId.Id,
                     PlayerId = alternateId.PlayerId,     
                     AlternateID = alternateId.AlternateID,      
-                    PlayerNickname = alternateId.Player!.Nickname
+                    //PlayerNickname = alternateId.Player!.Nickname
                 })
                 .ToListAsync();
                 
@@ -760,7 +760,7 @@ namespace CSLA.Services.Player
                     Id = alternateId.Id,
                     PlayerId = alternateId.PlayerId,     
                     AlternateID = alternateId.AlternateID,      
-                    PlayerNickname = alternateId.Player!.Nickname
+                    //PlayerNickname = alternateId.Player!.Nickname
                 })
                 .ToListAsync();
                 
@@ -801,7 +801,7 @@ namespace CSLA.Services.Player
                     Id = AlternateID.Id,
                     PlayerId = AlternateID.PlayerId,
                     AlternateID = AlternateID.AlternateID,
-                    PlayerNickname = AlternateID.Player?.Nickname,
+                    //PlayerNickname = AlternateID.Player?.Nickname,
                 };
                 
                 response.Dados = AlternateIDResponse;
@@ -839,7 +839,7 @@ namespace CSLA.Services.Player
                     Id = AlternateID!.Id,
                     PlayerId = AlternateID.PlayerId,
                     AlternateID = AlternateID.AlternateID,
-                    PlayerNickname = AlternateID.Player?.Nickname,
+                    //PlayerNickname = AlternateID.Player?.Nickname,
                 };
                 
                 response.Dados = AlternateIDResponse;
@@ -877,7 +877,7 @@ namespace CSLA.Services.Player
                     Id = AlternateID!.Id,
                     PlayerId = AlternateID.PlayerId,
                     AlternateID = AlternateID.AlternateID,
-                    PlayerNickname = AlternateID.Player?.Nickname,
+                    //PlayerNickname = AlternateID.Player?.Nickname,
                 };
                 
                 response.Dados = AlternateIDResponse;
@@ -891,5 +891,158 @@ namespace CSLA.Services.Player
                 return response;
             }
         }
+
+        // Player.Roles
+        public async Task<ResponseModel<List<string>>> GetRolesByPlayer(Guid playerId)
+        {
+            var response = new ResponseModel<List<string>>();
+
+            try
+            {
+                var roles = await _context.PlayerRoles
+                .Where(pr => pr.PlayerId == playerId)
+                .OrderBy(pr => pr.OrderIndex)
+                .Select(pr => pr.Role.Role)
+                .ToListAsync();
+
+                response.Dados = roles;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+            }
+
+            return response;
+        }
+        public async Task<ResponseModel<List<PlayerFullDetailsDTO>>> GetPlayersByRole(int RoleId)
+        {
+            var response = new ResponseModel<List<PlayerFullDetailsDTO>>();
+
+            try
+            {
+                var PlayersResponse = await _context.PlayerRoles
+                .Where( pr => pr.RoleId == RoleId )
+                .Select(pr => pr.Player)
+                .Distinct()
+                .Select( p => new PlayerFullDetailsDTO
+                {
+                    PlayerId = p.Id,
+                    Nickname = p.Nickname,
+
+                    Profile = p.Profile == null ? null : new ProfileResponseDTO
+                    {
+                        FirstName = p.Profile.FirstName,
+                        LastName = p.Profile.LastName,                      
+                        Born = p.Profile.Born,
+                        Status = p.Profile.Status,
+                        ApproxTotalWinnings = p.Profile.ApproxTotalWinnings,
+                        YearCareerStart = p.Profile.YearCareerStart,
+                        YearCareerEnd = p.Profile.YearCareerEnd,
+                    },
+
+                    NativeName = p.NativeName == null ? null : new NativeNameResponseDTO
+                    {
+                        NativeFirstName = p.NativeName.NativeFirstName,
+                        NativeLastName = p.NativeName.NativeLastName
+                    },
+
+                    Roles = p.Roles
+                    .Select(r => new RolesResponseDTO
+                    {
+                        RoleId = r.RoleId,
+                        RoleName = r.Role.Role
+                    })
+                    .ToList(),
+
+                    AlternateIDs = p.AlternateIDs
+                    .Select( a => new AlternateIDResponseDTO
+                    {
+                        AlternateID = a.AlternateID
+                    })
+                    .ToList()
+                })
+                .ToListAsync();
+
+                response.Dados = PlayersResponse;
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Message = ex.Message;
+                return response;
+            }
+
+        }
+        public async Task<ResponseModel<bool>> AddRoleToPlayer(Guid playerId, int roleId)
+        {
+            ResponseModel<bool> response = new ResponseModel<bool>();
+            try
+            {
+                // verifica se já existe
+                var exists = await _context.PlayerRoles
+                .AnyAsync(x => x.PlayerId == playerId && x.RoleId == roleId);
+
+                if (exists)
+                {
+                    response.Message = "Player já possui essa role.";
+                    response.Dados = false; // ou false
+                    return response;
+                }
+
+                // pega o valor maximo do OrderIndex, se for null ele retorna 0 (valor default)
+                var lastOrder = await _context.PlayerRoles
+                .Where(x => x.PlayerId == playerId)
+                .MaxAsync(x => (int?)x.OrderIndex) ?? 0;
+
+                var playerRole = new RolesModel
+                {
+                    PlayerId = playerId,
+                    RoleId = roleId,
+                    OrderIndex = lastOrder + 1
+                };
+
+                _context.PlayerRoles.Add(playerRole);
+                await _context.SaveChangesAsync();
+
+                response.Dados = true;
+                return response;
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = ex.InnerException?.Message ?? ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        public async Task<ResponseModel<bool>> RemoveRoleToPlayer(Guid playerId, int roleId)
+        {
+            ResponseModel<bool> response = new ResponseModel<bool>();
+            try
+            {
+                // verifica se já existe
+                var playerRole = await _context.PlayerRoles
+                .FirstOrDefaultAsync(x => x.PlayerId == playerId && x.RoleId == roleId);
+
+                if (playerRole == null)
+                {
+                    response.Message = "Role não encontrada para esse player.";
+                    response.Dados = false;
+                    return response;
+                }
+
+                _context.PlayerRoles.Remove(playerRole);
+                await _context.SaveChangesAsync();
+
+                response.Dados = true;
+                return response;
+            }
+            catch (System.Exception ex)
+            {
+                response.Message = ex.InnerException?.Message ?? ex.Message;
+                response.Status = false;
+                return response;
+            }
+        }
+        
     }
 }

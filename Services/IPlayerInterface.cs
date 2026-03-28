@@ -45,5 +45,13 @@ namespace CSLA.Services.Player
         Task<ResponseModel<AlternateIDResponseDTO>> CreateAlternateID(AlternateIDCreateDTO CreateDTO);
         Task<ResponseModel<AlternateIDResponseDTO>> EditAlternateID(AlternateIDEditDTO EditDTO);
         Task<ResponseModel<AlternateIDResponseDTO>> RemoveAlternateID(int Id);
+
+        // Player.Roles
+        Task<ResponseModel<List<string>>> GetRolesByPlayer(Guid playerId);
+        Task<ResponseModel<List<PlayerFullDetailsDTO>>> GetPlayersByRole(int RoleId);
+        Task<ResponseModel<bool>> AddRoleToPlayer(Guid playerId, int roleId);
+        Task<ResponseModel<bool>> RemoveRoleToPlayer(Guid playerId, int roleId);
+        
+
     }
 }

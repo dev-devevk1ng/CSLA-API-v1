@@ -5,7 +5,8 @@
             Legacy vs NiP, Gaimin Gladiators vs G2, PaiN vs PARIVISION, Gaimin Gladiators vs Liquid, Legacy vs G2
             Legacy vs AURORA, Legacy vs NAVI, FURIA vs PAIN, FURIA vs Astralis (sonho estranho)
         BLAST Open Rotterdam 2026
-            
+        FERJEE IN HOUSE 2026
+            Gaimin Gladiators vs MIBR,
     Gaules
         Amoung Us Ep.1 at Ep.11
         Sons Of The Forest Ep.1 at Ep.5

@@ -14,12 +14,11 @@ namespace CSLA.DTO.Player
         public Guid PlayerId { get; set; }
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
-        public DateOnly Born { get; set; }
+        public required DateOnly Born { get; set; }
         public required string Status { get; set; }
-        public decimal ApproxTotalWinnings { get; set; }
-        public int YearCareerStart { get; set; }
-        public int? YearCareerEnd { get; set; }
+        public required decimal ApproxTotalWinnings { get; set; }
+        public required int YearCareerStart { get; set; }
+        public required int? YearCareerEnd { get; set; }
         public DateTime CreatedAt { get; set; }
-        public required string PlayerNickname { get; set; }
     }
 }
